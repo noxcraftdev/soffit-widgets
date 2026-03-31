@@ -1,0 +1,3 @@
+description = "System stats: CPU 1-minute load average, memory usage, and uptime"
+components = ["cpu", "mem", "uptime"]
+has_compact = true

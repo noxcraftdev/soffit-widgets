@@ -1,0 +1,3 @@
+description = "Pomodoro timer — start with: echo $(date +%s) > /tmp/soffit-pomodoro"
+components = ["timer", "status"]
+has_compact = true
