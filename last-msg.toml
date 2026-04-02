@@ -9,3 +9,9 @@ theme_field = "dim"
 [colors.time]
 label = "Time"
 theme_field = "lgray"
+
+[icons.icon]
+label = "Icon"
+icons_field = "icon"
+default_value = "Last Msg: "
+is_char = false

@@ -21,3 +21,21 @@ theme_field = "orange"
 [colors.critical]
 label = "Critical"
 theme_field = "red"
+
+[icons.cpu]
+label = "CPU Icon"
+icons_field = "cpu"
+default_value = "\u26a1"
+is_char = false
+
+[icons.mem]
+label = "Memory Icon"
+icons_field = "mem"
+default_value = "\U0001f9e0"
+is_char = false
+
+[icons.uptime]
+label = "Uptime Icon"
+icons_field = "uptime"
+default_value = "\u231b"
+is_char = false

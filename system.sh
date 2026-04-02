@@ -1,27 +1,29 @@
 #!/bin/bash
 # System stats: CPU 1-minute load average, memory usage, and uptime
 #
-# Uses theme colors from config.theme for customizable appearance.
+# Uses theme colors and icons from soffit config for customizable appearance.
 # Memory color adapts to usage: green < 50%, orange 50-80%, red >= 80%.
 
 INPUT=$(cat)
 
-read -r COMPACT COMPONENTS DIM LGRAY GREEN ORANGE RED RESET < <(echo "$INPUT" | python3 -c "
+eval "$(echo "$INPUT" | python3 -c "
 import json, sys
 d = json.load(sys.stdin)
 cfg = d.get('config', {})
 theme = cfg.get('theme', {})
-print(
-    cfg.get('compact', False),
-    ','.join(cfg.get('components', [])),
-    theme.get('dim', ''),
-    theme.get('lgray', ''),
-    theme.get('green', ''),
-    theme.get('orange', ''),
-    theme.get('red', ''),
-    theme.get('reset', ''),
-)
-" 2>/dev/null)
+icons = cfg.get('icons', {})
+print(f'COMPACT={cfg.get(\"compact\", False)}')
+print(f'COMPONENTS=\"{",".join(cfg.get(\"components\", []))}\"')
+print(f'DIM=\"{theme.get(\"dim\", \"\")}\"')
+print(f'LGRAY=\"{theme.get(\"lgray\", \"\")}\"')
+print(f'GREEN=\"{theme.get(\"green\", \"\")}\"')
+print(f'ORANGE=\"{theme.get(\"orange\", \"\")}\"')
+print(f'RED=\"{theme.get(\"red\", \"\")}\"')
+print(f'RESET=\"{theme.get(\"reset\", \"\")}\"')
+print(f'ICON_CPU=\"{icons.get(\"cpu\", \"\u26a1\")}\"')
+print(f'ICON_MEM=\"{icons.get(\"mem\", \"\U0001f9e0\")}\"')
+print(f'ICON_UP=\"{icons.get(\"uptime\", \"\u231b\")}\"')
+" 2>/dev/null)"
 
 LOAD=$(cut -d' ' -f1 /proc/loadavg 2>/dev/null || echo "?")
 MEM_PCT=$(free 2>/dev/null | awk '/Mem:/{printf "%.0f", $3/$2*100}')
@@ -41,32 +43,29 @@ parts=""
 show_all=true
 [ -n "$COMPONENTS" ] && show_all=false
 
-# CPU load component
 if $show_all || echo "$COMPONENTS" | grep -q "cpu"; then
   if [ "$COMPACT" = "True" ]; then
     parts="${parts}${LGRAY}${LOAD}${RESET}"
   else
-    parts="${parts}${DIM}\u26a1${RESET}${LGRAY}${LOAD}${RESET}"
+    parts="${parts}${DIM}${ICON_CPU}${RESET}${LGRAY}${LOAD}${RESET}"
   fi
 fi
 
-# Memory component
 if $show_all || echo "$COMPONENTS" | grep -q "mem"; then
   [ -n "$parts" ] && { [ "$COMPACT" = "True" ] && parts="$parts " || parts="$parts ${DIM}|${RESET} "; }
   if [ "$COMPACT" = "True" ]; then
     parts="${parts}${MEM_COL}${MEM}${RESET}"
   else
-    parts="${parts}${DIM}\U0001f9e0${RESET}${MEM_COL}${MEM}${RESET}"
+    parts="${parts}${DIM}${ICON_MEM}${RESET}${MEM_COL}${MEM}${RESET}"
   fi
 fi
 
-# Uptime component
 if $show_all || echo "$COMPONENTS" | grep -q "uptime"; then
   [ -n "$parts" ] && { [ "$COMPACT" = "True" ] && parts="$parts " || parts="$parts ${DIM}|${RESET} "; }
   if [ "$COMPACT" = "True" ]; then
     parts="${parts}${DIM}${UP}${RESET}"
   else
-    parts="${parts}${DIM}\u231b${UP}${RESET}"
+    parts="${parts}${DIM}${ICON_UP}${UP}${RESET}"
   fi
 fi
 
