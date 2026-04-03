@@ -1,0 +1,19 @@
+description = "Claude cache efficiency per session — cold%, hit%, churn rate (requires claudelytics)"
+components = ["cold", "hit", "churn"]
+has_compact = true
+
+[colors.cold]
+label = "Cold (cache miss)"
+theme_field = "orange"
+
+[colors.hit]
+label = "Hit (cache read)"
+theme_field = "green"
+
+[colors.churn]
+label = "Churn"
+theme_field = "yellow"
+
+[colors.label]
+label = "Labels"
+theme_field = "dim"
