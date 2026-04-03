@@ -2,10 +2,11 @@
 # Daily budget pacing — hours remaining at current burn rate
 #
 # Requires: claudelytics in PATH, CLAUDELYTICS_DAILY_BUDGET env var set
-# Data source: claudelytics --json budget-status --budget <float>
 # Cache: stale-while-revalidate, 60s TTL, refresh locked for 30s
 
 set -euo pipefail
+
+export PATH="$HOME/.cargo/bin:$PATH"
 
 BUDGET="${CLAUDELYTICS_DAILY_BUDGET:-}"
 if [[ -z "$BUDGET" ]]; then
@@ -14,6 +15,9 @@ if [[ -z "$BUDGET" ]]; then
 fi
 
 INPUT=$(cat)
+
+# Pre-initialize so set -u doesn't abort if eval produces no output
+GREEN="" YELLOW="" RED="" DIM="" RESET="" ICON=""
 
 eval "$(echo "$INPUT" | python3 -c "
 import json, sys

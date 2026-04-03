@@ -7,7 +7,12 @@
 
 set -euo pipefail
 
+export PATH="$HOME/.cargo/bin:$PATH"
+
 INPUT=$(cat)
+
+# Pre-initialize so set -u doesn't abort if eval produces no output
+COMPACT=False COMPONENTS="" ORANGE="" GREEN="" YELLOW="" DIM="" RESET="" SID=""
 
 eval "$(echo "$INPUT" | python3 -c "
 import json, sys
