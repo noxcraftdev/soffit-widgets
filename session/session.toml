@@ -1,0 +1,7 @@
+description = "Shortest unique session ID prefix"
+components = []
+has_compact = false
+
+[theme.session]
+label = "Session ID"
+palette_role = "muted"

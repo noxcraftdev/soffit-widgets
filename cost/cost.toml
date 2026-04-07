@@ -1,0 +1,28 @@
+description = "Session, daily, and weekly cost with budget coloring"
+components = ["session", "today", "week"]
+has_compact = true
+
+[theme.within_budget]
+label = "Within budget"
+palette_role = "success"
+
+[theme.approaching]
+label = "Approaching limit"
+palette_role = "warning"
+
+[theme.over_budget]
+label = "Over budget"
+palette_role = "danger"
+
+[icons.cost]
+label = "Cost icon"
+icons_field = "cost"
+default_value = "\U0001f4b8 "
+is_char = false
+
+[settings.weekly_budget]
+type = "float"
+label = "Weekly budget ($)"
+default = 50.0
+min = 0.0
+max = 1000.0

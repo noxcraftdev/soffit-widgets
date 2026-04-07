@@ -1,0 +1,35 @@
+description = "Git branch and status"
+components = ["branch", "staged", "modified", "repo", "worktree"]
+has_compact = true
+
+[theme.branch]
+label = "Branch name"
+palette_role = "subtle"
+
+[theme.staged]
+label = "Staged changes"
+palette_role = "success"
+
+[theme.modified]
+label = "Modified files"
+palette_role = "warning"
+
+[theme.repo]
+label = "Repository name"
+palette_role = "primary"
+
+[theme.worktree]
+label = "Worktree name"
+palette_role = "accent"
+
+[icons.git_branch]
+label = "Branch icon"
+icons_field = "git_branch"
+default_value = "⌇ "
+is_char = false
+
+[icons.git_staged]
+label = "Staged icon"
+icons_field = "git_staged"
+default_value = "•"
+is_char = false

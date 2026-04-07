@@ -1,0 +1,7 @@
+description = "Vim mode indicator"
+components = []
+has_compact = false
+
+[theme.mode]
+label = "Mode color"
+palette_role = "accent"

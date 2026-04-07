@@ -1,0 +1,25 @@
+description = "Session duration"
+components = []
+has_compact = true
+
+[theme.short]
+label = "Under 30 min"
+palette_role = "subtle"
+
+[theme.medium]
+label = "30 min to 1 hour"
+palette_role = "muted"
+
+[theme.long]
+label = "1 to 2 hours"
+palette_role = "warning"
+
+[theme.very_long]
+label = "Over 2 hours"
+palette_role = "danger"
+
+[icons.duration]
+label = "Duration icon"
+icons_field = "duration"
+default_value = "\u23f1 "
+is_char = false

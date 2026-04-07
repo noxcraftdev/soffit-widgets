@@ -1,0 +1,21 @@
+description = "Claude Code version and model display"
+components = ["update", "version", "model"]
+has_compact = true
+
+[theme.version]
+label = "Version number"
+palette_role = "muted"
+
+[theme.model]
+label = "Model name"
+palette_role = "accent"
+
+[theme.update]
+label = "Update available"
+palette_role = "warning"
+
+[icons.update]
+label = "Update icon"
+icons_field = "update"
+default_value = "\u2191 "
+is_char = false

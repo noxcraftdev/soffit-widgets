@@ -1,0 +1,13 @@
+description = "Active agent name"
+components = []
+has_compact = true
+
+[theme.agent]
+label = "Agent name"
+palette_role = "warning"
+
+[icons.agent]
+label = "Agent icon"
+icons_field = "agent"
+default_value = "\u276f "
+is_char = false

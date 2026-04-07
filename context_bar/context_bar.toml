@@ -1,0 +1,37 @@
+description = "Context window usage bar"
+components = ["bar", "pct", "tokens"]
+has_compact = true
+
+[theme.low]
+label = "Low usage"
+palette_role = "success"
+
+[theme.mid]
+label = "Medium usage"
+palette_role = "warning"
+
+[theme.high]
+label = "High usage"
+palette_role = "danger"
+
+[theme.empty]
+label = "Empty bar"
+palette_role = "muted"
+
+[icons.bar_fill]
+label = "Fill character"
+icons_field = "bar_fill"
+default_value = "■"
+is_char = true
+
+[icons.bar_empty]
+label = "Empty character"
+icons_field = "bar_empty"
+default_value = "□"
+is_char = true
+
+[icons.bar_half]
+label = "Half character"
+icons_field = "bar_half"
+default_value = "◧"
+is_char = true

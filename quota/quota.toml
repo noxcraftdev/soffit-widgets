@@ -1,0 +1,33 @@
+description = "API rate limit quota bars"
+components = ["five_hour", "seven_day"]
+has_compact = false
+
+[theme.on_pace]
+label = "On pace"
+palette_role = "primary"
+
+[theme.slowing]
+label = "Slowing down"
+palette_role = "warning"
+
+[theme.exhausting]
+label = "Exhausting"
+palette_role = "danger"
+
+[icons.quota_fill]
+label = "Fill character"
+icons_field = "quota_fill"
+default_value = ""
+is_char = true
+
+[icons.quota_empty]
+label = "Empty character"
+icons_field = "quota_empty"
+default_value = "□"
+is_char = true
+
+[icons.quota_pace]
+label = "Pace marker"
+icons_field = "quota_pace"
+default_value = "◌"
+is_char = true

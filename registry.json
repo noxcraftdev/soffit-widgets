@@ -1,0 +1,67 @@
+{
+  "defaults": [
+    "vim", "agent", "version", "context_bar", "quota", "duration", "cost", "git", "session"
+  ],
+  "widgets": [
+    {
+      "name": "vim",
+      "description": "Vim mode indicator",
+      "file": "vim/vim.sh"
+    },
+    {
+      "name": "agent",
+      "description": "Active agent name",
+      "file": "agent/agent.sh"
+    },
+    {
+      "name": "version",
+      "description": "Claude Code version and model display",
+      "file": "version/version.sh"
+    },
+    {
+      "name": "context_bar",
+      "description": "Context window usage bar with gradient coloring",
+      "file": "context_bar/context_bar.sh"
+    },
+    {
+      "name": "quota",
+      "description": "API rate limit quota bars",
+      "file": "quota/quota.sh"
+    },
+    {
+      "name": "duration",
+      "description": "Session duration with time-based coloring",
+      "file": "duration/duration.sh"
+    },
+    {
+      "name": "cost",
+      "description": "Session, daily, and weekly cost with budget coloring",
+      "file": "cost/cost.sh"
+    },
+    {
+      "name": "git",
+      "description": "Git branch and status",
+      "file": "git/git.sh"
+    },
+    {
+      "name": "session",
+      "description": "Shortest unique session ID prefix",
+      "file": "session/session.sh"
+    },
+    {
+      "name": "last-msg",
+      "description": "Last interaction timestamp + cache token usage",
+      "file": "last-msg/last-msg.sh"
+    },
+    {
+      "name": "budget-clock",
+      "description": "Daily budget pacing -- hours remaining at burn rate (requires claudelytics)",
+      "file": "budget-clock/budget-clock.sh"
+    },
+    {
+      "name": "cache-health",
+      "description": "Cache efficiency health grade + detailed metrics (requires claudelytics)",
+      "file": "cache-health/cache-health.sh"
+    }
+  ]
+}
