@@ -98,10 +98,10 @@ def spawn_bg(lock_path, arg):
     except OSError:
         pass
 
-VERSION_CACHE = '/tmp/soffit-version-cache'
-VERSION_LOCK = '/tmp/soffit-version-lock'
-SELF_VERSION_CACHE = '/tmp/soffit-self-version-cache'
-SELF_VERSION_LOCK = '/tmp/soffit-self-version-lock'
+VERSION_CACHE = '/tmp/soffit-version'
+VERSION_LOCK = '/tmp/soffit-version-fetch.lock'
+SELF_VERSION_CACHE = '/tmp/soffit-self-version'
+SELF_VERSION_LOCK = '/tmp/soffit-self-version.lock'
 
 latest = read_cache(VERSION_CACHE)
 if needs_refresh(VERSION_CACHE):

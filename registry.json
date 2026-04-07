@@ -1,4 +1,5 @@
 {
+  "min_soffit_version": "0.1.0",
   "defaults": [
     "vim", "agent", "version", "context_bar", "quota", "duration", "cost", "git", "session"
   ],

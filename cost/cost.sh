@@ -51,8 +51,8 @@ def color_for_budget(ratio):
 
 # Cache file paths (same as Rust paths module)
 DAILY_CACHE = '/tmp/soffit-cost-daily'
-SESSION_CACHE = f'/tmp/soffit-cost-session-{sid}' if sid else ''
-COST_LOCK = '/tmp/soffit-cost-lock'
+SESSION_CACHE = f'/tmp/soffit-cost-{sid}' if sid else ''
+COST_LOCK = '/tmp/soffit-cost-refresh.lock'
 
 def read_cache(path):
     try:
