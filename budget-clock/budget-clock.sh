@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Daily budget pacing — hours remaining at current burn rate
+# Daily budget pacing -- hours remaining at current burn rate
 #
 # Requires: claudelytics in PATH, CLAUDELYTICS_DAILY_BUDGET env var set
 # Cache: stale-while-revalidate, 60s TTL, refresh locked for 30s
@@ -16,21 +16,21 @@ fi
 
 INPUT=$(cat)
 
-# Pre-initialize so set -u doesn't abort if eval produces no output
-GREEN="" YELLOW="" RED="" DIM="" RESET="" ICON=""
+GREEN="" YELLOW="" RED="" DIM="" RESET="" ICON="" COMPACT=False
 
 eval "$(echo "$INPUT" | python3 -c "
 import json, sys
 d = json.load(sys.stdin)
 cfg = d.get('config', {})
-theme = cfg.get('theme', {})
+palette = cfg.get('palette', {})
 icons = cfg.get('icons', {})
-print(f'GREEN=\"{theme.get(\"green\", \"\")}\"')
-print(f'YELLOW=\"{theme.get(\"yellow\", \"\")}\"')
-print(f'RED=\"{theme.get(\"red\", \"\")}\"')
-print(f'DIM=\"{theme.get(\"dim\", \"\")}\"')
-print(f'RESET=\"{theme.get(\"reset\", \"\")}\"')
+print(f'GREEN=\"{palette.get(\"success\", \"\")}\"')
+print(f'YELLOW=\"{palette.get(\"warning\", \"\")}\"')
+print(f'RED=\"{palette.get(\"danger\", \"\")}\"')
+print(f'DIM=\"{palette.get(\"muted\", \"\")}\"')
+print(f'RESET=\"{palette.get(\"reset\", \"\")}\"')
 print(f'ICON=\"{icons.get(\"icon\", \"\")}\"')
+print(f'COMPACT={cfg.get(\"compact\", False)}')
 " 2>/dev/null)"
 
 command -v claudelytics &>/dev/null || {
@@ -50,24 +50,35 @@ render() {
   over_budget=$(echo "$raw" | cut -f2)
   pct=$(echo "$raw" | cut -f3)
 
-  local color label color_and_label tier
-  color_and_label=$(python3 -c "
-import sys
-over = '$over_budget' == 'true'
-h = float('$hours_remaining') if not over else 0.0
-p = float('$pct') if not over else 0.0
-if over:
-    print('red\tOVER')
-else:
-    total_m = int(max(0.0, h) * 60)
-    hrs = total_m // 60
-    mins = total_m % 60
-    lbl = f'{hrs}h {mins}m left' if hrs > 0 else f'{mins}m left'
-    tier = 'green' if p > 50 else ('yellow' if p > 10 else 'red')
-    print(tier + '\t' + lbl)
-")
-  tier=$(echo "$color_and_label" | cut -f1)
-  label=$(echo "$color_and_label" | cut -f2)
+  local color label tier
+
+  if [[ "$over_budget" == "true" ]]; then
+    tier=red
+    label="OVER"
+  else
+    # Format time remaining in bash
+    local h_float="$hours_remaining"
+    local total_m
+    total_m=$(python3 -c "print(int(max(0.0, float('$h_float')) * 60))" 2>/dev/null || echo 0)
+    local hrs=$(( total_m / 60 ))
+    local mins=$(( total_m % 60 ))
+    if (( hrs > 0 )); then
+      label="${hrs}h ${mins}m left"
+    else
+      label="${mins}m left"
+    fi
+
+    # Determine tier from pct
+    local pct_int
+    pct_int=$(python3 -c "print(int(float('$pct')))" 2>/dev/null || echo 0)
+    if (( pct_int > 50 )); then
+      tier=green
+    elif (( pct_int > 10 )); then
+      tier=yellow
+    else
+      tier=red
+    fi
+  fi
 
   case "$tier" in
     green)  color="$GREEN" ;;
@@ -76,10 +87,19 @@ else:
   esac
 
   local output
-  if [[ -n "$ICON" ]]; then
-    output="${DIM}${ICON}${RESET}${color}${label}${RESET}"
+  if [[ "$COMPACT" == "True" ]]; then
+    # Compact: colored status word
+    case "$tier" in
+      green)  output="${color}ok${RESET}" ;;
+      yellow) output="${color}low${RESET}" ;;
+      *)      output="${color}stop${RESET}" ;;
+    esac
   else
-    output="${color}${label}${RESET}"
+    if [[ -n "$ICON" ]]; then
+      output="${DIM}${ICON}${RESET}${color}${label}${RESET}"
+    else
+      output="${color}${label}${RESET}"
+    fi
   fi
 
   echo -e "{\"output\": \"$output\", \"components\": [\"clock\"]}"
@@ -114,14 +134,14 @@ touch "$LOCK"
   trap 'rm -f "$LOCK"' EXIT
   DATA=$(claudelytics --json budget-status --budget "$BUDGET" 2>/dev/null) || exit 0
   TMPFILE=$(mktemp)
-  python3 -c "
+  echo "$DATA" | python3 -c "
 import json, sys
-d = json.loads(sys.argv[1])
+d = json.load(sys.stdin)
 hours_remaining = d['hours_remaining']
 over_budget = 'true' if d['over_budget'] else 'false'
-budget = float(sys.argv[2])
+budget = float(sys.argv[1])
 today_cost = d['today_cost']
 pct_remaining = max(0.0, (budget - today_cost) / budget * 100) if budget > 0 else 0.0
 sys.stdout.write(str(hours_remaining) + '\t' + over_budget + '\t' + str(pct_remaining))
-" "$DATA" "$BUDGET" > "$TMPFILE" && mv "$TMPFILE" "$CACHE" || rm -f "$TMPFILE"
+" "$BUDGET" > "$TMPFILE" && mv "$TMPFILE" "$CACHE" || rm -f "$TMPFILE"
 ) & disown

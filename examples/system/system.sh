@@ -1,25 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # System stats: CPU 1-minute load average, memory usage, and uptime
 #
 # Uses theme colors and icons from soffit config for customizable appearance.
 # Memory color adapts to usage: green < 50%, orange 50-80%, red >= 80%.
 
+set -euo pipefail
+
 INPUT=$(cat)
+
+COMPACT=False COMPONENTS="" DIM="" LGRAY="" GREEN="" ORANGE="" RED="" RESET="" ICON_CPU="" ICON_MEM="" ICON_UP=""
 
 eval "$(echo "$INPUT" | python3 -c "
 import json, sys
 d = json.load(sys.stdin)
 cfg = d.get('config', {})
-theme = cfg.get('theme', {})
+palette = cfg.get('palette', {})
 icons = cfg.get('icons', {})
 print(f'COMPACT={cfg.get(\"compact\", False)}')
-print(f'COMPONENTS=\"{",".join(cfg.get(\"components\", []))}\"')
-print(f'DIM=\"{theme.get(\"dim\", \"\")}\"')
-print(f'LGRAY=\"{theme.get(\"lgray\", \"\")}\"')
-print(f'GREEN=\"{theme.get(\"green\", \"\")}\"')
-print(f'ORANGE=\"{theme.get(\"orange\", \"\")}\"')
-print(f'RED=\"{theme.get(\"red\", \"\")}\"')
-print(f'RESET=\"{theme.get(\"reset\", \"\")}\"')
+print('COMPONENTS=\"' + ','.join(cfg.get('components', [])) + '\"')
+print(f'DIM=\"{palette.get(\"muted\", \"\")}\"')
+print(f'LGRAY=\"{palette.get(\"subtle\", \"\")}\"')
+print(f'GREEN=\"{palette.get(\"success\", \"\")}\"')
+print(f'ORANGE=\"{palette.get(\"warning\", \"\")}\"')
+print(f'RED=\"{palette.get(\"danger\", \"\")}\"')
+print(f'RESET=\"{palette.get(\"reset\", \"\")}\"')
 print(f'ICON_CPU=\"{icons.get(\"cpu\", \"\u26a1\")}\"')
 print(f'ICON_MEM=\"{icons.get(\"mem\", \"\U0001f9e0\")}\"')
 print(f'ICON_UP=\"{icons.get(\"uptime\", \"\u231b\")}\"')

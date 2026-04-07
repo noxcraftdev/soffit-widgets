@@ -1,19 +1,44 @@
-description = "Claude cache efficiency per session — cold%, hit%, churn rate (requires claudelytics)"
-components = ["cold", "hit", "churn"]
+description = "Claude cache efficiency per session -- health grade + detailed metrics (requires claudelytics)"
+components = ["grade", "cold", "hit", "churn"]
 has_compact = true
 
-[colors.cold]
+[theme.grade]
+label = "Health Grade"
+palette_role = "success"
+
+[theme.cold]
 label = "Cold (cache miss)"
-theme_field = "orange"
+palette_role = "warning"
 
-[colors.hit]
+[theme.hit]
 label = "Hit (cache read)"
-theme_field = "green"
+palette_role = "success"
 
-[colors.churn]
+[theme.churn]
 label = "Churn"
-theme_field = "yellow"
+palette_role = "warning"
 
-[colors.label]
+[theme.label]
 label = "Labels"
-theme_field = "dim"
+palette_role = "muted"
+
+[settings.cache_ttl]
+label = "Cache TTL (seconds)"
+type = "int"
+default = 60
+min = 10
+max = 300
+
+[settings.healthy_threshold]
+label = "Healthy hit% threshold"
+type = "int"
+default = 70
+min = 0
+max = 100
+
+[settings.moderate_threshold]
+label = "Moderate hit% threshold"
+type = "int"
+default = 40
+min = 0
+max = 100

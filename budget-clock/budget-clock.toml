@@ -1,18 +1,18 @@
 description = "Daily budget pacing — hours remaining at current burn rate (requires claudelytics + CLAUDELYTICS_DAILY_BUDGET)"
 components = ["clock"]
-has_compact = false
+has_compact = true
 
-[colors.ok]
+[theme.ok]
 label = "OK (>50% remaining)"
-theme_field = "green"
+palette_role = "success"
 
-[colors.warn]
+[theme.warn]
 label = "Warning (10–50% remaining)"
-theme_field = "yellow"
+palette_role = "warning"
 
-[colors.over]
+[theme.over]
 label = "Over / Critical (<10% or over budget)"
-theme_field = "red"
+palette_role = "danger"
 
 [icons.icon]
 label = "Icon"

@@ -1,17 +1,25 @@
-description = "Timestamp of the last Claude response"
-components = ["time"]
+description = "Last interaction timestamp + cache token usage"
+components = ["time", "cache"]
 has_compact = true
 
-[colors.label]
-label = "Label"
-theme_field = "dim"
+[theme.time]
+label = "Timestamp"
+palette_role = "subtle"
 
-[colors.time]
-label = "Time"
-theme_field = "lgray"
+[theme.label]
+label = "Label"
+palette_role = "muted"
+
+[theme.cache_read]
+label = "Cache Read"
+palette_role = "success"
+
+[theme.cache_write]
+label = "Cache Write"
+palette_role = "warning"
 
 [icons.icon]
 label = "Icon"
 icons_field = "icon"
-default_value = "Last Msg: "
+default_value = "\u23F1 "
 is_char = false

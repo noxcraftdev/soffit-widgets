@@ -2,25 +2,25 @@ description = "System stats: CPU 1-minute load average, memory usage, and uptime
 components = ["cpu", "mem", "uptime"]
 has_compact = true
 
-[colors.value]
+[theme.value]
 label = "Value"
-theme_field = "lgray"
+palette_role = "subtle"
 
-[colors.icon]
+[theme.icon]
 label = "Icon"
-theme_field = "dim"
+palette_role = "muted"
 
-[colors.healthy]
+[theme.healthy]
 label = "Healthy"
-theme_field = "green"
+palette_role = "success"
 
-[colors.warning]
+[theme.warning]
 label = "Warning"
-theme_field = "orange"
+palette_role = "warning"
 
-[colors.critical]
+[theme.critical]
 label = "Critical"
-theme_field = "red"
+palette_role = "danger"
 
 [icons.cpu]
 label = "CPU Icon"

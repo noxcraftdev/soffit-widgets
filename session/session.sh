@@ -6,11 +6,14 @@
 
 set -euo pipefail
 
+INPUT=$(cat)
+export SOFFIT_INPUT="$INPUT"
+
 python3 << 'PYEOF'
 import json, sys, os, glob, time
 
 try:
-    d = json.load(sys.stdin)
+    d = json.loads(os.environ.get('SOFFIT_INPUT', '{}'))
 except Exception:
     sys.exit(0)
 
