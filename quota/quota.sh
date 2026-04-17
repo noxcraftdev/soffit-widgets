@@ -242,6 +242,28 @@ for comp, window_secs, label, show_pace in [
 
 sep    = f' {muted}|{reset} '
 output = sep.join(segments)
+
+# Write quota samples to SQLite for tmux-session sidebar usage bars
+import os, sqlite3
+_db_dir = os.path.join(os.path.expanduser('~'), '.local', 'state', 'claude-statusline')
+_db_path = os.path.join(_db_dir, 'usage.db')
+try:
+    os.makedirs(_db_dir, exist_ok=True)
+    _conn = sqlite3.connect(_db_path)
+    _conn.execute('CREATE TABLE IF NOT EXISTS usage_samples (ts INTEGER, fh_used INTEGER, fh_reset INTEGER, sd_used INTEGER, sd_reset INTEGER)')
+    fh_rl = rate_limits.get('five_hour') or {}
+    sd_rl = rate_limits.get('seven_day') or {}
+    fh_u = int(fh_rl.get('used_percentage') or 0)
+    sd_u = int(sd_rl.get('used_percentage') or 0)
+    fh_r = int(parse_resets_at(fh_rl.get('resets_at')))
+    sd_r = int(parse_resets_at(sd_rl.get('resets_at')))
+    _conn.execute('INSERT INTO usage_samples VALUES (?, ?, ?, ?, ?)', (int(now), fh_u, fh_r, sd_u, sd_r))
+    _conn.execute('DELETE FROM usage_samples WHERE ts < ?', (int(now) - 8 * 86400,))
+    _conn.commit()
+    _conn.close()
+except Exception:
+    pass
+
 result = {'output': output, 'components': ['five_hour', 'seven_day']}
 print(json.dumps(result, ensure_ascii=False))
 " 2>/dev/null || echo '{"output": "", "components": ["five_hour", "seven_day"]}'
